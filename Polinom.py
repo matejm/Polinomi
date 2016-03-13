@@ -1,12 +1,19 @@
+import string_handling
+
 class Polinom:
     """
     Each polynomial is represented as a list of coefficients.
     p(x) = Anx^n + .... + A2x^2 + A1x + A0
     i-th element of a list represents coefficient Ai
     """
-    def __init__(self, list):
-        """>>> p = Polinom([1,2,3])"""
-        self.coefficients = self._erase_zeroes(list)
+    def __init__(self, data):
+        """
+        >>> p = Polinom([1,2,3])
+        >>> p = Polinom('3x^2 + 2x + 1')
+        """
+        if isinstance(data, str):
+            data = string_handling.string_to_polinom(data)
+        self.coefficients = self._erase_zeroes(data)
         self.degree = len(self.coefficients) - 1
 
     @staticmethod
@@ -140,35 +147,24 @@ class Polinom:
             return Polinom(self._div(self.coefficients, other.coefficients)[1])
         raise TypeError('Invalid operation for Polinom and '+type(other).__name__)
 
+    def __eq__(self, other):
+        """
+        >>> Polinom('x + 1') == Polinom([1, 1])
+        True
+        """
+        if isinstance(other, Polinom):
+            return self.coefficients == other.coefficients
+        return False
+
     def __repr__(self):
-        """
-        >>> p = Polinom([1,2,3])
-        >>> p
-        3x^2 + 2x + 1
-        """
-        s = []
-        for i, j in list(enumerate(self.coefficients))[::-1]:
-            if j:
-                if j == int(j): j = int(j)
-                foo = ''
-                if j == -1 and i != 0: foo += '-'
-                elif j != 1 or i == 0: foo += str(j)
-                if i:
-                    foo += 'x'
-                    if i != 1: foo += '^' + str(i)
-                s.append(foo)
-        if not s: s.append('0')
-        out = s[0]
-        for i in s[1:]:
-            if i[0] == '-': out += ' - ' + i[1:]
-            else: out += ' + ' + i
-        return out
+        return string_handling.polinom_to_string(self.coefficients)
 
     def value(self, x):
         res = 0
         for i, c in enumerate(self.coefficients):
             res += c*x**i
         return res
+
 
 if __name__ == '__main__':
     import doctest

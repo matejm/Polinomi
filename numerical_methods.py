@@ -1,14 +1,6 @@
 from Polinom import Polinom
+from methods import derivative
 
-def derivate(polinom):
-    """
-    >>> derivate(Polinom([1,2,3]))
-    6x + 2
-    """
-    l = []
-    for i in range(1, polinom.degree+1):
-        l.append(polinom.coefficients[i]*i)
-    return Polinom(l)
 
 def Bisection(a, b, polinom):
     """
@@ -42,12 +34,30 @@ def Tangent(x, polinom):
     """
     if not isinstance(polinom, Polinom):
         polinom = Polinom(polinom)
-    pd = derivate(polinom)
+    pd = derivative(polinom)
     for i in range(100):
         x2 = x - polinom.value(x) / pd.value(x)
         if x == x2: return x
         x = x2
     return None
+
+def Iteration(x, polinom):
+    """
+    Not always correct !!
+    Returns real zero of a polinom p(x).
+    >>> Iteration(0.5, [-1, 1, 1])
+    0.6180339887498946
+    """
+    if isinstance(polinom, Polinom):
+        polinom = polinom.coefficients
+    degree = len(polinom)
+    *list, An = polinom
+    polinom = -Polinom(list)
+    p = lambda x: pow(polinom.value(x)/An, 1/(degree-1))
+    for i in range(5000):
+        x = p(x)
+    return x
+
 
 if __name__ == '__main__':
     import doctest

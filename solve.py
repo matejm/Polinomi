@@ -1,31 +1,7 @@
+from Polinom import Polinom
+from methods import horners_method, get_divisors
 import cmath
 
-def getDivisors(n):
-    """
-    >>> getDivisors(10)
-    [1, -1, 2, -2, 5, -5, 10, -10]
-    """
-    divisors = []
-    for i in range(1, int(n**0.5)+1):
-        if n%i == 0:
-            divisors.append(i)
-            divisors.append(-i)
-            if i*i != n:
-                divisors.append(n//i)
-                divisors.append(-n//i)
-    return sorted(divisors, key=abs)
-
-def HornersMethod(polinom, x):
-    """
-    >>> HornersMethod([-1,2,-6,2],3)
-    ([2, 0, 2], 5)
-    """
-    result = 0
-    polinom2 = []
-    for c in polinom[::-1]:
-        result = result * x + c
-        polinom2.append(result)
-    return polinom2[:-1][::-1], result
 
 def solve_linear(polinom):
     """
@@ -100,19 +76,20 @@ def solve(polinom):
     elif l == 4:
         return 3, solve_cubic(polinom)
     elif all([i == int(i) for i in polinom]):
-        c = getDivisors(polinom[0]) + [0]
-        d = getDivisors(polinom[1])
+        c = get_divisors(polinom[0]) + [0]
+        d = get_divisors(polinom[1])
         candidats = set()
         for num in c:
             for denum in d:
                 candidats.add(num/denum)
         for can in candidats:
-            polinom2, remainder = HornersMethod(polinom, can)
+            polinom2, remainder = horners_method(polinom, can)
             if not remainder:
                 number, solutions = solve(polinom2)
                 if number != -2: number += 1
                 return number, tuple(list(solutions)+[can])
     return -2, ()
+
 
 if __name__ == '__main__':
     import doctest

@@ -28,6 +28,7 @@ def get_divisors(n):
     >>> get_divisors(10)
     [1, -1, 2, -2, 5, -5, 10, -10]
     """
+    n = abs(n)
     divisors = []
     for i in range(1, int(n**0.5)+1):
         if n%i == 0:

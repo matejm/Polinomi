@@ -26,22 +26,31 @@ def solve_inequation(polinom, symbol):
         return ['{' + str(i) + '}' for i in solve_equation(polinom)[1]]
 
     sol = [i for i in solve_equation(polinom)[1] if i.imag == 0]
+    sol2 = []
+    for i in set(sol):
+        if sol.count(i)%2 == 1:
+            sol2.append(i)
+    sol = sol2
     sol.sort()
-    signs = [bool(i%2) for i in range(len(sol)+1)]
-    if polinom.coefficients[-1] > 0:
-        signs.pop(0)
-        signs.append(not(signs[-1]))
+    b = polinom.coefficients[-1] < 0
+    signs = [bool(i%2 == b) for i in range(len(sol)+1)]
+    signs = signs[::-1]
 
     # make a class Interval ?
     brackets = '()' if symbol in [Symbol.gt, Symbol.lt] else '[]'
     intervals = ['(-inf, ' + str(sol[0]) + brackets[1]]
     for i in range(1, len(sol)):
-        intervals.append(brackets[0]+ str(sol[i-1]) + ',' + str(sol[i]) + brackets[1])
+        a, b = sol[i-1], sol[i]
+        if a != b:
+            if a == int(a): a = int(a)
+            if b == int(b): b = int(b)
+            a, b = str(a), str(b)
+            intervals.append(brackets[0]+ a + ', ' + b + brackets[1])
     intervals.append(brackets[0] + str(sol[-1]) + ', inf)')
 
     out = []
     b = symbol in [Symbol.gt, Symbol.ge]
-    for i in range(len(signs)):
+    for i in range(len(intervals)):
         if signs[i] == b:
             out.append(intervals[i])
     return out

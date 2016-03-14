@@ -34,6 +34,8 @@ def string_to_polinom(string):
     """
     >>> string_to_polinom('x^2 + 2x + 3')
     [3, 2, 1]
+    >>> string_to_polinom('x^4 - x^3 - 13x^2 + 12x + 100')
+    [100, 12, -13, -1, 1]
     """
     string = string.replace(' ', '')
     if not string:

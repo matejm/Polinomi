@@ -69,7 +69,9 @@ def solve_equation(polinom):
             return -1, tuple()
         else:
             return 0, tuple()
-    elif all([i == int(i) for i in polinom]):
+    if l == 2:
+        return 1, (solve_linear(polinom))
+    if all([i == int(i) for i in polinom]):
         c = get_divisors(polinom[0]) + [0]
         d = get_divisors(polinom[1])
         candidats = set()
@@ -79,12 +81,10 @@ def solve_equation(polinom):
         for can in candidats:
             polinom2, remainder = horners_method(polinom, can)
             if not remainder:
-                number, solutions = solve(polinom2)
+                number, solutions = solve_equation(polinom2)
                 if number != -2: number += 1
                 return number, tuple(list(solutions)+[can])
-    elif l == 2:
-        return 1, (solve_linear(polinom))
-    elif l == 3:
+    if l == 3:
         return 2, solve_quadratic(polinom)
     elif l == 4:
         return 3, solve_cubic(polinom)

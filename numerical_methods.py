@@ -1,10 +1,11 @@
 from Polinom import Polinom
 from methods import derivative
 
+# Some numerical methods for finding zeros of a polynomial
 
 def Bisection(a, b, polinom):
     """
-    Returns real zero of a polinom p(x) in interval [a,b],
+    Returns real zero of a polynomial p(x) in interval [a,b],
     f(a) and f(b) should have opposite signs.
     >>> Bisection(1, 0, [-1, 1, 1])
     0.6180339887498949
@@ -28,7 +29,7 @@ def Bisection(a, b, polinom):
 
 def Tangent(x, polinom):
     """
-    Returns real zero of a polinom p(x).
+    Returns real zero of a polynomial p(x).
     >>> Tangent(0, [-1, 1, 1])
     0.6180339887498948
     """
@@ -41,9 +42,23 @@ def Tangent(x, polinom):
         x = x2
     return None
 
+def Secant(a, b, polinom):
+    """
+    Returns real zero of a polynomial p(x)
+    Similar to tangent method, but without using derivatives.
+    In case of ZeroDivisionError secant newer intersects line y=0. Choose different a or b.
+    >>> Secant(0, 1, [-1, 1, 1])
+    0.6180339887498948
+    """
+    if not isinstance(polinom, Polinom):
+        polinom = Polinom(polinom)
+    for i in range(100):
+        if a == b: break
+        a, b = a - (a - b)/(polinom.value(a) - polinom.value(b))*polinom.value(a), a
+    print(a)
+
 def Iteration(x, polinom):
     """
-    Not always correct !!
     Returns real zero of a polinom p(x).
     >>> Iteration(0.5, [-1, 1, 1])
     0.6180339887498946

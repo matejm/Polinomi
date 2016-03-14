@@ -48,7 +48,7 @@ def solve_cubic(polinom):
         x.append(xi)
     return tuple(x)
 
-def solve(polinom):
+def solve_equation(polinom):
     """
     Solves the equation for polinom p(x)
     p(x) = 0
@@ -90,6 +90,7 @@ def solve(polinom):
                 return number, tuple(list(solutions)+[can])
     return -2, ()
 
+solve = solve_equation
 
 if __name__ == '__main__':
     import doctest

@@ -1,4 +1,5 @@
 from Polinom import Polinom
+import Fraction
 from methods import horners_method, get_divisors
 import cmath
 
@@ -9,7 +10,9 @@ def solve_linear(polinom):
     -0.6
     """
     b, a = polinom
-    return -b/a
+    c = -b/a
+    if c == int(c): c = int(c)
+    return c
 
 def solve_quadratic(polinom):
     """
@@ -59,18 +62,21 @@ def solve_equation(polinom):
     >>> solve([0])
     (-1, ())
     """
+    if isinstance(polinom, Fraction.Fraction):
+        polinom = polinom.num
     if isinstance(polinom, Polinom):
         polinom = polinom.coefficients
     l = len(polinom)
     if l == 0:
         polinom.append(0)
+        l += 1
     if l == 1:
         if polinom[0] == 0:
             return -1, tuple()
         else:
             return 0, tuple()
     if l == 2:
-        return 1, (solve_linear(polinom))
+        return 1, (solve_linear(polinom),)
     if all([i == int(i) for i in polinom]):
         c = get_divisors(polinom[0]) + [0]
         d = get_divisors(polinom[1])

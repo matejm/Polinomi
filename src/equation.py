@@ -103,11 +103,13 @@ def solve_equation(polinom):
         return 1, (solve_linear(polinom),)
     if all([i == int(i) for i in polinom]):
         c = get_divisors(polinom[0]) + [0]
-        d = get_divisors(polinom[1])
+        d = get_divisors(polinom[-1])
         candidats = set()
         for num in c:
             for denum in d:
-                candidats.add(num/denum)
+                frac = num/denum
+                if frac == int(frac): frac = int(frac)
+                candidats.add(frac)
         for can in candidats:
             polinom2, remainder = horners_method(polinom, can)
             if not remainder:

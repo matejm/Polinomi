@@ -95,8 +95,7 @@ class Polinom:
         raise TypeError('Invalid operation for Polinom and '+type(other).__name__)
 
     def __sub__(self, other):
-        other = -other
-        return self + other
+        return self + (-other)
 
     def __mul__(self, other):
         """

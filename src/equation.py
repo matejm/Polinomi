@@ -26,8 +26,8 @@ def solve_quadratic(polinom):
     if x1 == x1.real:
         x1 = x1.real
         x2 = x2.real
-    if x1 == int(x1): x1 = int(x1)
-    if x2 == int(x2): x2 = int(x2)
+        if x1 == int(x1): x1 = int(x1)
+        if x2 == int(x2): x2 = int(x2)
     return x1, x2
 
 def solve_cubic(polinom):
@@ -49,6 +49,30 @@ def solve_cubic(polinom):
             xi = xi.real
             if xi == int(xi): xi = int(xi)
         x.append(xi)
+    return tuple(x)
+
+def solve_quartic(polinom):
+    """
+    >>> solve_quartic([1,1,1,1,1])
+    ((-0.809017-0.5877853j), (-0.809017+0.5877853j), (0.309017-0.9510565j), (0.309017+0.9510565j))
+    """
+    a, b, c, d, e = polinom
+    p1 = 2*c**3 - 9*b*c*d + 27*a*d**2 + 27*b**2*e - 72*a*c*e
+    p2 = p1 + cmath.sqrt(-4*(c**2 - 3*b*d + 12*a*e)**3 + p1**2)
+    p3 = (c**2 - 3*b*d + 12*a*e) / (3*a * pow(p2/2, 1/3)) + pow(p2/2, 1/3) / (3*a)
+    p4 = cmath.sqrt((b**2)/(4*a**2) - (2*c)/(3*a) + p3)
+    p5 = (b**2) / (2*a**2) - (4*c) / (3*a) - p3
+    p6 = ((-b**3)/(a**3) + (4*b*c)/(a**2) - (8*d)/a) / (4*p4)
+    x = [0]*4
+    x[0] = -b/(4*a) - p4/2 - cmath.sqrt(p5 - p6)/2
+    x[1] = -b/(4*a) - p4/2 + cmath.sqrt(p5 - p6)/2
+    x[2] = -b/(4*a) + p4/2 - cmath.sqrt(p5 + p6)/2
+    x[3] = -b/(4*a) + p4/2 + cmath.sqrt(p5 + p6)/2
+    for i in range(4):
+        x[i] = complex(round(x[i].real, 7), round(x[i].imag, 7))
+        if not x[i].imag:
+            x[i] = x[i].real
+            if x[i] == int(x[i]): x[i] = int(x[i])
     return tuple(x)
 
 def solve_equation(polinom):
@@ -94,6 +118,8 @@ def solve_equation(polinom):
         return 2, solve_quadratic(polinom)
     elif l == 4:
         return 3, solve_cubic(polinom)
+    elif l == 5:
+        return 4, solve_quartic(polinom)
     return -2, ()
 
 solve = solve_equation

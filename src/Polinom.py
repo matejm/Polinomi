@@ -158,11 +158,13 @@ class Polinom:
     def __repr__(self):
         return string_handling.polinom_to_string(self.coefficients)
 
-    def value(self, x):
+    def __getitem__(self, x):
         res = 0
         for i, c in enumerate(self.coefficients):
             res += c*x**i
         return res
+
+    value = __getitem__
 
 
 if __name__ == '__main__':

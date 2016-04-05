@@ -1,5 +1,6 @@
 from Polinom import Polinom
 import equation
+import string_handling_fractions
 from fractions import gcd as gcd_int
 
 def gcd(a, b):
@@ -40,6 +41,8 @@ class Fraction:
         """
         >>> Fraction(3, 10) + Fraction(7, 4)
         (41) / (20)
+        >>> Fraction(1, 3) + 1
+        (4) / (3)
         """
         if isinstance(other, float) or isinstance(other, int) or isinstance(other, Polinom):
             other = Fraction(other, 1)
@@ -94,7 +97,19 @@ class Fraction:
         return Fraction(self.denum, self.num)
 
     def __repr__(self):
-        return '({}) / ({})'.format(self.num, self.denum)
+        return string_handling_fractions.fraction_to_string(self)
+
+    def __getitem__(self, x):
+        """
+        >>> Fraction(Polinom('x-1'), Polinom('x'))[2]
+        0.5
+        """
+        num, denum = self.num, self.denum
+        if isinstance(self.num, Polinom): num = self.num[x]
+        if isinstance(self.denum, Polinom): denum = self.denum[x]
+        return num / denum
+
+    value = __getitem__
 
 
 if __name__ == '__main__':

@@ -13,16 +13,16 @@ def Bisection(a, b, polinom, show_steps=False):
     if not isinstance(polinom, Polinom):
         polinom = Polinom(polinom)
 
-    v = polinom.value(a)
-    last_v = polinom.value(b)
+    v = polinom[a]
+    last_v = polinom[b]
     if (v < 0) == (last_v < 0): return None
-    if polinom.value(a) < 0:
+    if polinom[a] < 0:
         a, b = b, a
 
     while v != last_v:
         c = (a+b)/2
         last_v = v
-        v = polinom.value(c)
+        v = polinom[c]
         if show_steps: print(v, '\t', a, '\t', b)
         if v > 0: a = c
         else: b = c
@@ -38,7 +38,7 @@ def Tangent(x, polinom):
         polinom = Polinom(polinom)
     pd = derivative(polinom)
     for i in range(100):
-        x2 = x - polinom.value(x) / pd.value(x)
+        x2 = x - polinom[x] / pd[x]
         if x == x2: return x
         x = x2
     return None
@@ -55,7 +55,7 @@ def Secant(a, b, polinom):
         polinom = Polinom(polinom)
     for i in range(100):
         if a == b: break
-        a, b = a - (a - b)/(polinom.value(a) - polinom.value(b))*polinom.value(a), a
+        a, b = a - (a - b)/(polinom[a] - polinom[b])*polinom[a], a
     print(a)
 
 def Iteration(x, polinom):
@@ -69,7 +69,7 @@ def Iteration(x, polinom):
     degree = len(polinom)
     *list, An = polinom
     polinom = -Polinom(list)
-    p = lambda x: pow(polinom.value(x)/An, 1/(degree-1))
+    p = lambda x: pow(polinom[x]/An, 1/(degree-1))
     for i in range(5000):
         x = p(x)
     return x

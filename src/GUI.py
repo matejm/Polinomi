@@ -1,6 +1,18 @@
 from Polinom import Polinom
+from Fraction import Fraction
 from numerical_methods import Bisection as bisekcija
+from equation import solve, solve_poles
 
+def graf(f):
+    if isinstance(f, int) or isinstance(f, float):
+        f = Polinom([f])
+    if isinstance(f, Polinom):
+        f = Fraction(f, 1)
+    print('Ničle:', solve(f)[1])
+    print('Poli: ', solve_poles(f)[1])
+    print('Asimptota:', f.num//f.denum)
+    print('Presečišča z asimptoto:', solve(f.num % f.denum))
+    print('Začetna vrednost:', f[0])
 
 class GUI():
     def __init__(self):
@@ -10,19 +22,19 @@ class GUI():
         self.polinoms = []
         self.buttons = 0
 
-        for i in range(11): self.polinoms.append(tk.Entry(self.window, relief=tk.FLAT))
+        for i in range(8): self.polinoms.append(tk.Entry(self.window, relief=tk.FLAT))
         for i in range(2): self.addButton()
 
-        tk.Button(self.window, text='+', command=self.addButton, relief=tk.FLAT).grid(row=11, column=1, padx=10, sticky='E')
+        tk.Button(self.window, text='+', command=self.addButton, relief=tk.FLAT).grid(row=8, column=1, padx=10, sticky='E')
         self.equation = tk.Entry(self.window, relief=tk.FLAT)
-        self.equation.grid(row=12, column=1, padx=(0,10))
-        tk.Button(self.window, text='Izračunaj', command=self.calc, relief=tk.FLAT).grid(row=13, column=1, padx=10, sticky='E')
-        tk.Label(self.window, text='Izraz:').grid(row=12, padx=(10,0))
+        self.equation.grid(row=9, column=1, padx=(0,10))
+        tk.Button(self.window, text='Izračunaj', command=self.calc, relief=tk.FLAT).grid(row=10, column=1, padx=10, sticky='E')
+        tk.Label(self.window, text='Izraz:').grid(row=9, padx=(10,0))
         self.result = tk.Label(self.window)
-        self.result.grid(row=14, columnspan=2, pady=10)
+        self.result.grid(row=11, columnspan=2, pady=10)
 
     def addButton(self):
-        if self.buttons < 11:
+        if self.buttons < 8:
             self.polinoms[self.buttons].grid(row=self.buttons, column=1, padx=(0, 10), pady=(10,0))
             tk.Label(self.window, text=chr(ord('p')+self.buttons)+'(x) =').grid(row=self.buttons, padx=(10, 0), pady=(10,0))
             self.buttons += 1

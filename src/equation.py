@@ -79,9 +79,10 @@ def solve_equation(polinom):
     """
     Solves the equation for polinom p(x)
     p(x) = 0
-    Returns 0 if no solutions.
-    Returns -1 if every real number is a solution.
-    Returns -2 if I don't know (yet) how to solve equation.
+    Returns number of solutions and tuple of them
+    Returns 0, (,) if no solutions.
+    Returns -1, (,) if every real number is a solution.
+    Returns -2, (,) if I don't know (yet) how to solve equation.
     (e.g equation has 4 or more irrational or complex zeros)
     >>> solve([0])
     (-1, ())
@@ -125,6 +126,22 @@ def solve_equation(polinom):
     return -2, ()
 
 solve = solve_equation
+
+def solve_poles(fraction):
+    """
+    Finds poles of rational function f(x)
+    Returns 0, (,) if function has 0 poles.
+    Returns -2, (,) if type if input is unknown.
+    >>> solve_poles(Fraction.Fraction(1, Polinom([1,1])))
+    (1, (-1,))
+    """
+    if isinstance(fraction, Fraction.Fraction):
+        fraction = fraction.denum
+        return solve_equation(fraction)
+    if isinstance(fraction, Polinom) or isinstance(fraction, int) or isinstance(fraction, float):
+        return 0, tuple()      # no poles
+    return -2, tuple()
+
 
 if __name__ == '__main__':
     import doctest

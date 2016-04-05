@@ -3,7 +3,7 @@ from methods import derivative
 
 # Some numerical methods for finding zeros of a polynomial
 
-def Bisection(a, b, polinom):
+def Bisection(a, b, polinom, show_steps=False):
     """
     Returns real zero of a polynomial p(x) in interval [a,b],
     f(a) and f(b) should have opposite signs.
@@ -23,6 +23,7 @@ def Bisection(a, b, polinom):
         c = (a+b)/2
         last_v = v
         v = polinom.value(c)
+        if show_steps: print(v, '\t', a, '\t', b)
         if v > 0: a = c
         else: b = c
     return c

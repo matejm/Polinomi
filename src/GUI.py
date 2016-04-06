@@ -3,16 +3,7 @@ from Fraction import Fraction
 from numerical_methods import Bisection as bisekcija
 from equation import solve, solve_poles
 
-def graf(f):
-    if isinstance(f, int) or isinstance(f, float):
-        f = Polinom([f])
-    if isinstance(f, Polinom):
-        f = Fraction(f, 1)
-    print('Ničle:', solve(f)[1])
-    print('Poli: ', solve_poles(f)[1])
-    print('Asimptota:', f.num//f.denum)
-    print('Presečišča z asimptoto:', solve(f.num % f.denum))
-    print('Začetna vrednost:', f[0])
+import tkinter as tk
 
 class GUI():
     def __init__(self):
@@ -54,6 +45,5 @@ class GUI():
 
 
 if __name__ == '__main__':
-    import tkinter as tk
     gui = GUI()
     gui.window.mainloop()
